@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "XzNk5Mq9LFsDSS7ui8N5g1dlYh91e2ckcOd3D9rSmM3VB94pQLNvuFDiWF570fs8AHw0RDXhZ2pz/oVz8Nq6JQ==",
+  "dgSpecHash": "dptdAzjF6+T+FeMfOazlkUMSiZ1vnmNpG/9LTsYNdkYKvsgvnK5u550bjEsNUnhlN2jmBa9WtCe5H5T0jJsQqw==",
   "success": true,
   "projectFilePath": "C:\\Users\\clem7\\OneDrive\\Documents\\ENSC\\Projets\\GenieLog\\ApiMediatheque\\ApiTodo.csproj",
   "expectedPackageFiles": [
@@ -40,10 +40,9 @@
     "C:\\Users\\clem7\\.nuget\\packages\\system.runtime.compilerservices.unsafe\\6.0.0\\system.runtime.compilerservices.unsafe.6.0.0.nupkg.sha512",
     "C:\\Users\\clem7\\.nuget\\packages\\system.text.encodings.web\\6.0.0\\system.text.encodings.web.6.0.0.nupkg.sha512",
     "C:\\Users\\clem7\\.nuget\\packages\\system.text.json\\6.0.0\\system.text.json.6.0.0.nupkg.sha512",
-    "C:\\Users\\clem7\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512",
-    "C:\\Users\\clem7\\.nuget\\packages\\microsoft.netcore.app.host.win-x64\\6.0.25\\microsoft.netcore.app.host.win-x64.6.0.25.nupkg.sha512",
     "C:\\Users\\clem7\\.nuget\\packages\\microsoft.netcore.app.ref\\6.0.25\\microsoft.netcore.app.ref.6.0.25.nupkg.sha512",
-    "C:\\Users\\clem7\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512"
+    "C:\\Users\\clem7\\.nuget\\packages\\microsoft.windowsdesktop.app.ref\\6.0.25\\microsoft.windowsdesktop.app.ref.6.0.25.nupkg.sha512",
+    "C:\\Users\\clem7\\.nuget\\packages\\microsoft.aspnetcore.app.ref\\6.0.25\\microsoft.aspnetcore.app.ref.6.0.25.nupkg.sha512"
   ],
   "logs": []
 }
