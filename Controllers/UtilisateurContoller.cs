@@ -32,8 +32,8 @@ public class UtilisateurController : ControllerBase
 
         return utilisateur;
     }
-    
-// POST: api/utilisateur
+
+    // POST: api/utilisateur
     [HttpPost]
     public async Task<ActionResult<Utilisateur>> PostUtilisateur(Utilisateur utilisateur)
     {
@@ -76,15 +76,24 @@ public class UtilisateurController : ControllerBase
     {
         var utilisateur = await _context.Utilisateurs.FindAsync(id);
 
-
         if (utilisateur == null)
             return NotFound();
 
+        var empruntsASupprimer = _context.Emprunts.Where(e => e.Emprunteur.Id == id);
+
+
+        if (empruntsASupprimer == null)
+        {
+            _context.Utilisateurs.Remove(utilisateur);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
 
         _context.Utilisateurs.Remove(utilisateur);
+        _context.Emprunts.RemoveRange(empruntsASupprimer);
         await _context.SaveChangesAsync();
 
         return NoContent();
     }
-    
+
 }

@@ -31,22 +31,6 @@ public class EmpruntController : ControllerBase
         return emprunt;
     }
 
-    // DELETE: api/utilisateur/2
-    [HttpDelete("{id}")]
-    public async Task<IActionResult> DeleteUtilisateur(int id)
-    {
-        var utilisateur = await _context.Utilisateurs.FindAsync(id);
-
-        if (utilisateur == null)
-            return NotFound();
-
-        var empruntsASupprimer = _context.Emprunts.Where(e => e.Emprunteur.Id == id);
-
-        _context.Utilisateurs.Remove(utilisateur);
-        _context.Emprunts.RemoveRange(empruntsASupprimer);
-        await _context.SaveChangesAsync();
-
-        return NoContent();
-    }
+    
 
 }

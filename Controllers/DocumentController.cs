@@ -81,10 +81,21 @@ public class DocumentController : ControllerBase
 
 
         if (document == null)
+        {
             return NotFound();
+        }
 
+        var empruntsASupprimer = _context.Emprunts.Where(e => e.Emprunte.Id == id);
+
+        if (empruntsASupprimer == null)
+        {
+            _context.Documents.Remove(document);
+            await _context.SaveChangesAsync();
+            return NoContent();
+        }
 
         _context.Documents.Remove(document);
+        _context.Emprunts.RemoveRange(empruntsASupprimer);
         await _context.SaveChangesAsync();
 
         return NoContent();
