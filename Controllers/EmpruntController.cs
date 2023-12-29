@@ -15,20 +15,20 @@ public class EmpruntController : ControllerBase
     [HttpGet]
     public async Task<ActionResult<IEnumerable<Emprunt>>> GetEmprunts()
     {
-        // Get utilisateurs and related lists
-        var emprunts = _context.Em;
-        return await utilisateurs.ToListAsync();
+        var emprunts = _context.Emprunts;
+        return await emprunts.ToListAsync();
     }
 
-// POST: api/utilisateur
-    [HttpPost]
-    public async Task<ActionResult<Utilisateur>> PostUtilisateur(Utilisateur utilisateur)
+    // GET : api/emprunt/2
+    [HttpGet("{id}")]
+    public async Task<ActionResult<Emprunt>> GetEmprunt(int id)
     {
-        _context.Utilisateurs.Add(utilisateur);
-        await _context.SaveChangesAsync();
+        var emprunt = await _context.Emprunts.SingleOrDefaultAsync(t => t.Id == id);
 
+        if (emprunt == null)
+            return NotFound();
 
-        return CreatedAtAction(nameof(GetUtilisateur), new { id = utilisateur.Id }, utilisateur);
+        return emprunt;
     }
 
     // DELETE: api/utilisateur/2
@@ -37,15 +37,16 @@ public class EmpruntController : ControllerBase
     {
         var utilisateur = await _context.Utilisateurs.FindAsync(id);
 
-
         if (utilisateur == null)
             return NotFound();
 
+        var empruntsASupprimer = _context.Emprunts.Where(e => e.Emprunteur.Id == id);
 
         _context.Utilisateurs.Remove(utilisateur);
+        _context.Emprunts.RemoveRange(empruntsASupprimer);
         await _context.SaveChangesAsync();
 
         return NoContent();
     }
-    
+
 }

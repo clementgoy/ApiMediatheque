@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("ApiMediatheque")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+559803e67648e46920fa33392d0746ea8717dd02")]
 [assembly: System.Reflection.AssemblyProductAttribute("ApiMediatheque")]
 [assembly: System.Reflection.AssemblyTitleAttribute("ApiMediatheque")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

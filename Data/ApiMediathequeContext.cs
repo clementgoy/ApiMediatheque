@@ -4,6 +4,7 @@ public class ApiMediathequeContext : DbContext
 {
     public DbSet<Document> Documents { get; set; } = null!;
     public DbSet<Utilisateur> Utilisateurs { get; set; } = null!;
+    public DbSet<Emprunt> Emprunts { get; set; } = null!;
 
     public string DbPath { get; private set; }
 
