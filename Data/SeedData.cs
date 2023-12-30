@@ -7,10 +7,14 @@ public class SeedData
         {
             return;   // DB already filled
         }
-        /*if (context.Utilisateurs.Any())
+        if (context.Utilisateurs.Any())
         {
             return;   // DB already filled
-        }*/
+        }
+        if (context.Emprunts.Any())
+        {
+            return;   // DB already filled
+        }
 
         // Add documents
         Document GenieLogPourLesNuls = new Document
@@ -38,7 +42,6 @@ public class SeedData
             Nom = "Simon",
             Prenom = "Tauvron",
             Email = "stauvron@ensc.fr",
-            //Emprunts = {JujutsuKaisen}
         };
 
         Utilisateur ClementGoy = new Utilisateur
@@ -46,15 +49,23 @@ public class SeedData
             Nom = "Clement",
             Prenom = "Goy",
             Email = "cgoy@ensc.fr",
-            //Docs = { HistoireDuRicard }
         };
 
+        context.Utilisateurs.AddRange(
+            SimonTauvron,
+            ClementGoy
+        );
+
+        // Add Emprunts
         Emprunt E1 = new Emprunt
         {
             Emprunteur = SimonTauvron,
             Emprunte = HistoireDuRicard,
             // SimonTauvron emprunte HistoireDuRicard
         };
+
+        context.Emprunts.AddRange(
+            E1);
 
         context.SaveChanges();
     }
