@@ -24,3 +24,4 @@ public class ApiMediathequeContext : DbContext
         //options.LogTo(Console.WriteLine, new[] { DbLoggerCategory.Database.Command.Name }, LogLevel.Information);
     }
 }
+
