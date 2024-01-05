@@ -64,6 +64,9 @@ public class EmpruntController : ControllerBase
 
         // Ajouter l'emprunt à la base de données
         _context.Emprunts.Add(emprunt);
+
+        document.Stock--; // Retire le document du stock
+
         await _context.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetEmprunt), new { id = emprunt.Id }, emprunt);
@@ -76,6 +79,8 @@ public class EmpruntController : ControllerBase
     public async Task<IActionResult> DeleteEmprunt(int id)
     {
         var emprunt = await _context.Emprunts.FindAsync(id);
+        var document = await _context.Documents.FindAsync(emprunt.EmprunteId);
+
 
         if (emprunt == null)
         {
@@ -83,6 +88,9 @@ public class EmpruntController : ControllerBase
         }
 
         _context.Emprunts.Remove(emprunt);
+
+        document.Stock++; // Rajoute le document au stock
+
         await _context.SaveChangesAsync();
 
         return NoContent();
