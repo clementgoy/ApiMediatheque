@@ -59,8 +59,8 @@ public class SeedData
         // Add Emprunts
         Emprunt E1 = new Emprunt
         {
-            Emprunteur = SimonTauvron,
-            Emprunte = HistoireDuRicard,
+            EmprunteurId = 1,
+            EmprunteId = 2,
             // SimonTauvron emprunte HistoireDuRicard
         };
 

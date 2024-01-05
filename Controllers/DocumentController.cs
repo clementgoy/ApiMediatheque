@@ -85,7 +85,7 @@ public class DocumentController : ControllerBase
             return NotFound();
         }
 
-        var empruntsASupprimer = _context.Emprunts.Where(e => e.Emprunte.Id == id);
+        var empruntsASupprimer = _context.Emprunts.Where(e => e.EmprunteId == id);
 
         if (empruntsASupprimer == null)
         {

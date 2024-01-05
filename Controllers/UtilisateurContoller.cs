@@ -79,7 +79,7 @@ public class UtilisateurController : ControllerBase
         if (utilisateur == null)
             return NotFound();
 
-        var empruntsASupprimer = _context.Emprunts.Where(e => e.Emprunteur.Id == id);
+        var empruntsASupprimer = _context.Emprunts.Where(e => e.EmprunteurId == id);
 
 
         if (empruntsASupprimer == null)
