@@ -35,24 +35,31 @@ public class EmpruntController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Emprunt>> PostEmprunt(Emprunt emprunt)
     {
-        // Vérifier si l'emprunteur existe
+        // Vérifie si l'emprunteur existe
         var emprunteur = await _context.Utilisateurs.FindAsync(emprunt.EmprunteurId);
         if (emprunteur == null)
         {
             return NotFound($"L'utilisateur avec l'ID {emprunt.EmprunteurId} n'existe pas.");
         }
 
-        // Vérifier si le document existe
+        // Vérifie si le document existe
         var document = await _context.Documents.FindAsync(emprunt.EmprunteId);
         if (document == null)
         {
             return NotFound($"Le document avec l'ID {emprunt.EmprunteId} n'existe pas.");
         }
 
-        // Vérifier si l'ID de l'emprunt est unique
+        // Vérifie si l'ID de l'emprunt existe déjà
         if (await _context.Emprunts.AnyAsync(e => e.Id == emprunt.Id))
         {
             return BadRequest($"L'ID {emprunt.Id} de l'emprunt existe déjà. Choisissez un autre ID.");
+        }
+
+        // Vérifie si le stock est suffisant
+        var empruntsEnCours = await _context.Emprunts.CountAsync(e => e.EmprunteId == emprunt.EmprunteId);
+        if (empruntsEnCours >= document.Stock)
+        {
+            return BadRequest($"Stock insuffisant. Tous les exemplaires du document avec l'ID {emprunt.EmprunteId} sont déjà empruntés.");
         }
 
         // Ajouter l'emprunt à la base de données
@@ -61,6 +68,7 @@ public class EmpruntController : ControllerBase
 
         return CreatedAtAction(nameof(GetEmprunt), new { id = emprunt.Id }, emprunt);
     }
+
 
 
     // DELETE: api/emprunt

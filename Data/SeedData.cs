@@ -28,7 +28,7 @@ public class SeedData
         {
             Titre = "L'histoire du ricard",
             Auteur = "Clement Goy",
-            Stock = 5,
+            Stock = 1,
         };
 
         context.Documents.AddRange(
