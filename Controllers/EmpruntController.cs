@@ -35,32 +35,33 @@ public class EmpruntController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Emprunt>> PostEmprunt(Emprunt emprunt)
     {
+        // Vérifier si l'emprunteur existe
+        var emprunteur = await _context.Utilisateurs.FindAsync(emprunt.EmprunteurId);
+        if (emprunteur == null)
+        {
+            return NotFound($"L'utilisateur avec l'ID {emprunt.EmprunteurId} n'existe pas.");
+        }
+
+        // Vérifier si le document existe
+        var document = await _context.Documents.FindAsync(emprunt.EmprunteId);
+        if (document == null)
+        {
+            return NotFound($"Le document avec l'ID {emprunt.EmprunteId} n'existe pas.");
+        }
+
+        // Vérifier si l'ID de l'emprunt est unique
+        if (await _context.Emprunts.AnyAsync(e => e.Id == emprunt.Id))
+        {
+            return BadRequest($"L'ID {emprunt.Id} de l'emprunt existe déjà. Choisissez un autre ID.");
+        }
+
+        // Ajouter l'emprunt à la base de données
         _context.Emprunts.Add(emprunt);
-
-    /* var Emprunt = await _context.Emprunts.FindAsync(Id);
-
-        if (Emprunt == null)
-        {
-            return NotFound();
-        }
-
-        foreach (var Id in Utilisateur)
-        {
-            var utilisateur = await _context.Utilisateurs.FindAsync(Id);
-            if (utilisateur == null)
-            {
-                return NotFound();
-            }
-            emprunt.Utilisateurs.Add(utilisateur);
-        }
-
-
-*/
         await _context.SaveChangesAsync();
-
 
         return CreatedAtAction(nameof(GetEmprunt), new { id = emprunt.Id }, emprunt);
     }
+
 
     // DELETE: api/emprunt
     [HttpDelete("{id}")]
