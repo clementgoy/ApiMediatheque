@@ -22,16 +22,17 @@ public class DocumentController : ControllerBase
 
     // GET: api/document/2
     [HttpGet("{id}")]
-    public async Task<ActionResult<Document>> GetDocument(int id)
+    public async Task<ActionResult<DocumentDTO>> GetDocument(int id)
     {
-        // Find a specific item
-        // SingleAsync() throws an exception if no item is found (which is possible, depending on id)
-        // SingleOrDefaultAsync() is a safer choice here
-        var document = await _context.Documents.SingleOrDefaultAsync(t => t.Id == id);
-
+        var document = await _context.Documents
+            .Where(d => d.Id == id)
+            .Select(d => new DocumentDTO(d, _context))
+            .SingleOrDefaultAsync();
 
         if (document == null)
+        {
             return NotFound();
+        }
 
         return document;
     }

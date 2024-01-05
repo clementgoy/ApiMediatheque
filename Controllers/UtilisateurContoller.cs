@@ -22,16 +22,21 @@ public class UtilisateurController : ControllerBase
 
     // GET : api/utilisateur/2
     [HttpGet("{id}")]
-    public async Task<ActionResult<Utilisateur>> GetUtilisateur(int id)
+    public async Task<ActionResult<UtilisateurDTO>> GetUtilisateur(int id)
     {
-        var utilisateur = await _context.Utilisateurs.SingleOrDefaultAsync(t => t.Id == id);
-
+        var utilisateur = await _context.Utilisateurs
+            .Where(u => u.Id == id)
+            .Select(u => new UtilisateurDTO(u, _context))
+            .SingleOrDefaultAsync();
 
         if (utilisateur == null)
+        {
             return NotFound();
+        }
 
         return utilisateur;
     }
+
 
     // POST: api/utilisateur
     [HttpPost]
@@ -39,7 +44,6 @@ public class UtilisateurController : ControllerBase
     {
         _context.Utilisateurs.Add(utilisateur);
         await _context.SaveChangesAsync();
-
 
         return CreatedAtAction(nameof(GetUtilisateur), new { id = utilisateur.Id }, utilisateur);
     }
@@ -53,7 +57,6 @@ public class UtilisateurController : ControllerBase
 
 
         _context.Entry(utilisateur).State = EntityState.Modified;
-
 
         try
         {
@@ -80,7 +83,6 @@ public class UtilisateurController : ControllerBase
             return NotFound();
 
         var empruntsASupprimer = _context.Emprunts.Where(e => e.EmprunteurId == id);
-
 
         if (empruntsASupprimer == null)
         {

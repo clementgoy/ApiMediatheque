@@ -1,14 +1,25 @@
-/*{
-    public string Titre { get; set; }
-    public string Auteur { get; set; }
+public class DocumentDTO
+{
+    public int Id { get; set; }
+    public string Titre { get; set; } = null!;
+    public string Auteur { get; set; } = null!;
     public int Stock { get; set; }
-    public DocumentDTO () {}
+    public int Emprunt { get; set; }
+    public List<int> EmprunteurIds { get; set; } = new List<int>();
 
-
-    public DocumentDTO(Document document)
+    public DocumentDTO(Document document, ApiMediathequeContext context)
     {
-        Titre = Document.Titre;
-        Auteur = Document.Auteur;
-        Stock = Document.Stock;
+        Id = document.Id;
+        Titre = document.Titre;
+        Auteur = document.Auteur;
+        Stock = document.Stock;
+        Emprunt = context.Emprunts.Count(e => e.EmprunteId == document.Id);
+        EmprunteurIds = context.Emprunts
+            .Where(e => e.EmprunteId == document.Id)
+            .Select(e => e.EmprunteurId)
+            .ToList();
     }
-}*/
+}
+
+
+
