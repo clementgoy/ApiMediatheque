@@ -1,5 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+
+
 [ApiController]
 [Route("api/document")]
 public class DocumentController : ControllerBase
@@ -9,7 +11,6 @@ public class DocumentController : ControllerBase
     {
         _context = context;
     }
-
 
     // GET: api/document
     [HttpGet]
@@ -55,9 +56,7 @@ public class DocumentController : ControllerBase
         if (id != document.Id)
             return BadRequest();
 
-
         _context.Entry(document).State = EntityState.Modified;
-
 
         try
         {
@@ -79,7 +78,6 @@ public class DocumentController : ControllerBase
     public async Task<IActionResult> DeleteDocument(int id)
     {
         var document = await _context.Documents.FindAsync(id);
-
 
         if (document == null)
         {
