@@ -5,4 +5,12 @@ public class Document
     public string Auteur { get; set; }
     public int Stock { get; set; }
     public Document () {}
+
+    public Document(DocumentDTO documentDTO)
+    {
+        Titre = DocumentDTO.Titre;
+        Auteur = DocumentDTO.Auteur;
+        Stock = DocumentDTO.Stock;
+    }
+
 }

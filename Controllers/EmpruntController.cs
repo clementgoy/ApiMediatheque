@@ -36,6 +36,26 @@ public class EmpruntController : ControllerBase
     public async Task<ActionResult<Emprunt>> PostEmprunt(Emprunt emprunt)
     {
         _context.Emprunts.Add(emprunt);
+
+    /* var Emprunt = await _context.Emprunts.FindAsync(Id);
+
+        if (Emprunt == null)
+        {
+            return NotFound();
+        }
+
+        foreach (var Id in Utilisateur)
+        {
+            var utilisateur = await _context.Utilisateurs.FindAsync(Id);
+            if (utilisateur == null)
+            {
+                return NotFound();
+            }
+            emprunt.Utilisateurs.Add(utilisateur);
+        }
+
+
+*/
         await _context.SaveChangesAsync();
 
 

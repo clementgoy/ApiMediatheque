@@ -7,14 +7,14 @@ public class SeedData
         {
             return;   // DB already filled
         }
-        if (context.Utilisateurs.Any())
+        /* if (context.Utilisateurs.Any())
         {
             return;   // DB already filled
         }
         if (context.Emprunts.Any())
         {
             return;   // DB already filled
-        }
+        }*/
 
         // Add documents
         Document GenieLogPourLesNuls = new Document
