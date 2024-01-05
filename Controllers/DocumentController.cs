@@ -14,12 +14,15 @@ public class DocumentController : ControllerBase
 
     // GET: api/document
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Document>>> GetDocuments()
+    public async Task<ActionResult<IEnumerable<DocumentDTO>>> GetDocuments()
     {
-        // Get documents
-        var documents = _context.Documents;
-        return await documents.ToListAsync();
+        var documents = await _context.Documents
+            .Select(d => new DocumentDTO(d, _context))
+            .ToListAsync();
+
+        return documents;
     }
+
 
     // GET: api/document/2
     [HttpGet("{id}")]

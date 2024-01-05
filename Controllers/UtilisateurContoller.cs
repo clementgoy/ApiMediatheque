@@ -13,12 +13,15 @@ public class UtilisateurController : ControllerBase
 
     // GET : api/utilisateur
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<Utilisateur>>> GetUtilisateurs()
+    public async Task<ActionResult<IEnumerable<UtilisateurDTO>>> GetUtilisateurs()
     {
-        // Get utilisateurs and related lists
-        var utilisateurs = _context.Utilisateurs;
-        return await utilisateurs.ToListAsync();
+        var utilisateurs = await _context.Utilisateurs
+            .Select(u => new UtilisateurDTO(u, _context))
+            .ToListAsync();
+
+        return utilisateurs;
     }
+
 
     // GET : api/utilisateur/2
     [HttpGet("{id}")]
