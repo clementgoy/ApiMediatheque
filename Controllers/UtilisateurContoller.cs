@@ -13,22 +13,29 @@ public class UtilisateurController : ControllerBase
 
     // GET : api/utilisateur
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<UtilisateurDTO>>> GetUtilisateurs()
+    public async Task<ActionResult<IEnumerable<Utilisateur>>> GetUtilisateurs()
     {
-        var utilisateurs = await _context.Utilisateurs
-            .Select(u => new UtilisateurDTO(u, _context))
-            .ToListAsync();
-
+        var utilisateurs = await _context.Utilisateurs.ToListAsync();
+        foreach (Utilisateur util in utilisateurs)
+        {
+            var emprunts = await _context.Emprunts.Where(u => u.EmprunteurId == util.Id).ToListAsync();
+            var documents = new List<int>();
+            foreach (var emprunt in emprunts)
+            {
+                documents.Add(emprunt.EmprunteId);
+            }
+            util.Documents = documents;
+            util.Emprunt = documents.Count;
+        }
         return utilisateurs;
     }
 
     // GET : api/utilisateur/2
     [HttpGet("{id}")]
-    public async Task<ActionResult<UtilisateurDTO>> GetUtilisateur(int id)
+    public async Task<ActionResult<Utilisateur>> GetUtilisateur(int id)
     {
         var utilisateur = await _context.Utilisateurs
             .Where(u => u.Id == id)
-            .Select(u => new UtilisateurDTO(u, _context))
             .SingleOrDefaultAsync();
 
         if (utilisateur == null)
@@ -38,7 +45,6 @@ public class UtilisateurController : ControllerBase
 
         return utilisateur;
     }
-
 
     // POST: api/utilisateur
     [HttpPost]

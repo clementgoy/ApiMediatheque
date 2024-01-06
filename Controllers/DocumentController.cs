@@ -14,29 +14,40 @@ public class DocumentController : ControllerBase
 
     // GET: api/document
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<DocumentDTO>>> GetDocuments()
+    public async Task<ActionResult<IEnumerable<Document>>> GetDocuments()
     {
-        var documents = await _context.Documents
-            .Select(d => new DocumentDTO(d, _context))
-            .ToListAsync();
-
+        var documents = await _context.Documents.ToListAsync();
+        foreach (Document doc in documents)
+        {
+            var emprunts = await _context.Emprunts.Where(d => d.EmprunteId == doc.Id).ToListAsync();
+            var emprunteurs = new List<int>();
+            foreach (var emprunt in emprunts)
+            {
+                emprunteurs.Add(emprunt.EmprunteurId);
+            }
+            doc.EmprunteurIds = emprunteurs;
+            doc.Emprunt = emprunteurs.Count;
+        }
         return documents;
     }
 
-
     // GET: api/document/2
     [HttpGet("{id}")]
-    public async Task<ActionResult<DocumentDTO>> GetDocument(int id)
+    public async Task<ActionResult<Document>> GetDocument(int id)
     {
-        var document = await _context.Documents
-            .Where(d => d.Id == id)
-            .Select(d => new DocumentDTO(d, _context))
-            .SingleOrDefaultAsync();
+        var document = await _context.Documents.SingleOrDefaultAsync(t => t.Id == id);
+        var emprunts = await _context.Emprunts.Where(d => d.Id == id).ToListAsync();
+        var emprunteurs = new List<int>();
 
         if (document == null)
         {
             return NotFound();
         }
+        foreach (Emprunt emprunt in emprunts)
+        {
+            emprunteurs.Add(emprunt.EmprunteurId);
+        }
+        document.EmprunteurIds = emprunteurs;
 
         return document;
     }
