@@ -3,11 +3,11 @@ public class SeedData
     public static void Init()
     {
         using var context = new ApiMediathequeContext();
-        /*if (context.Documents.Any())
+        if (context.Documents.Any())
         {
             return;   // DB already filled
         }
-        if (context.Utilisateurs.Any())
+        /*if (context.Utilisateurs.Any())
         {
             return;   // DB already filled
         }

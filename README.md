@@ -10,6 +10,14 @@
    | Func_04            |          Oui          | Simon Clement |       /     |
    | Func_05            |          Oui          | Simon Clement |       /     |
    | Func_06            |          Oui          | Simon Clement |       /     |
+   | Func_07            |           /           | Simon Clement |       /     |
+   | Func_08            |           /           | Simon Clement |       /     |
+   | Tech_01            |          Oui          | Simon Clement |       /     |
+   | Tech_02            |          Oui          | Simon Clement |       /     |
+   | Tech_03            |          Oui          | Simon Clement |       /     |
+   | Tech_04            |          Oui          | Simon Clement |       /     |
+   | Tech_05            |           /           | Simon Clement |       /     |
+   | Tech_06            |          Oui          | Simon Clement |       /     |
 
 3. Procédure d'installation :
    > git clone git@<depot>.git

@@ -77,7 +77,7 @@ public class EmpruntController : ControllerBase
         }
 
         // Ajoute l'emprunt à la base de données
-        emprunt.DateEmprunt = DateTime.Now;
+        emprunt.DateEmprunt = DateTime.Now; // Ajoute la date de l'emprunt à la base de données
         _context.Emprunts.Add(emprunt);
 
         await _context.SaveChangesAsync();
