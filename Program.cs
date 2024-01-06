@@ -1,5 +1,4 @@
-SeedData seed = new SeedData();
-seed.Init();
+//SeedData seed = new SeedData();
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -12,6 +11,8 @@ builder.Services.AddSwaggerGen();
 builder.Services.AddDbContext<ApiMediathequeContext>();
 
 var app = builder.Build();
+
+SeedData.Init(); // Seed data into DB
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())

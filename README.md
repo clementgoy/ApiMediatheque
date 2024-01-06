@@ -1,15 +1,15 @@
 # ApiMediatheque
 
-1. Ce projet a pour but de développer un service web destiné à fonctionner en tant que backend pour une application de gestion de médiathèque. La médiathèque propose divers documents accessibles aux utilisateurs pour consultation sur place, emprunt et retour.
+1. Ce projet a pour but de développer un service web destiné à fonctionner en tant que backend pour une application de gestion de médiathèque. La médiathèque propose divers documents accessibles aux utilisateurs pour consultation sur place, emprunt et retour. A noter qu'un utilisateur ne peut emprunter deux fois le même document. De plus, un document est empruntable seulement si il a un stock disponible.
 
 2. | Code de l'exigence | Respect de l'exigence |  Responsable  | Commentaire |
    | :----------------- | :-------------------: | :-----------: | ----------: |
-   | Func_01            |          Oui          |     Simon     |           / |
-   | Func_02            |          Oui          |     Simon     |           / |
-   | Func_03            |          Oui          |    Clement    |           / |
-   | Func_04            |          Oui          | Simon Clement |           / |
-   | Func_05            |           /           | Simon Clement |           / |
-   | Func_06            |           /           |       /       |           / |
+   | Func_01            |          Oui          | Simon Clement |       /     |
+   | Func_02            |          Oui          | Simon Clement |       /     |
+   | Func_03            |          Oui          | Simon Clement |       /     |
+   | Func_04            |          Oui          | Simon Clement |       /     |
+   | Func_05            |          Oui          | Simon Clement |       /     |
+   | Func_06            |          Oui          | Simon Clement |       /     |
 
 3. Procédure d'installation :
    > git clone git@<depot>.git
@@ -20,4 +20,4 @@
 
 Utilisation de la version 6 du framework .NET.
 
-4. ![DiagrammeUML](https://www.plantuml.com/plantuml/dpng/NOv12i8m44NtSugXIqClq5K5kt0ZWdg0q0O9PXAPpAoaTrTAJAkhC3_lFtwVnR8e1HY3pHblueFFLfmoli0Sfmvz532dH1rcOH_lOCxiulOUoFfGpxce3cbKSb5-F5SlxBue8fYzYbEk2PYBfF6nq8XOPGCzMVzS9LlgczthHrStm0mR0bEBpQuf69Jtas2RrahlugGKtW00)
+4. ![DiagrammeUML](https://www.plantuml.com/plantuml/png/PP1D2i8m48NtSugXIqClq5K5kt0ZWdg0a0OPp8zC9YlftMqb3LLNuNsyVCbCdqIpPE_0E9qIteGS9IqsCxv07SSEAGYeK_GT9c4ATr1djc6R1w_9rJWLrI6Qx6sGBy-LXErQHGIrpyjRbO2wI3IFJniHgspmJyu_hiBcwtze1HDi1uejDhkcTA2SCy4srjz2RyEuxECD)
