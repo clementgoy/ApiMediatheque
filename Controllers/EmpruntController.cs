@@ -69,7 +69,15 @@ public class EmpruntController : ControllerBase
             return BadRequest($"Stock insuffisant. Tous les exemplaires du document avec l'ID {emprunt.EmprunteId} sont déjà empruntés.");
         }
 
-        // Ajouter l'emprunt à la base de données
+        // Vérifie si l'utilisateur est en retard pour rendre un document
+        var isUserLate = await _context.Emprunts.AnyAsync(e => e.EmprunteurId == emprunt.EmprunteurId && e.DateEmprunt.AddDays(15) < DateTime.Now);
+        if (isUserLate)
+        {
+            return BadRequest($"L'utilisateur avec l'ID {emprunt.EmprunteurId} est en retard pour rendre un document. Il ne peut pas emprunter de nouveau.");
+        }
+
+        // Ajoute l'emprunt à la base de données
+        emprunt.DateEmprunt = DateTime.Now;
         _context.Emprunts.Add(emprunt);
 
         await _context.SaveChangesAsync();

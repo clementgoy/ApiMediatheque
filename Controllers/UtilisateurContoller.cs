@@ -22,7 +22,6 @@ public class UtilisateurController : ControllerBase
         return utilisateurs;
     }
 
-
     // GET : api/utilisateur/2
     [HttpGet("{id}")]
     public async Task<ActionResult<UtilisateurDTO>> GetUtilisateur(int id)
