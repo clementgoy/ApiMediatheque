@@ -1,4 +1,11 @@
-public class Media:DocumentDTO
+public enum SupportMedia
 {
-        public string Support { get; set; }
+        Audio,
+        Video
 }
+
+public class Media : DocumentDTO
+{
+        public SupportMedia Support { get; set; }
+}
+

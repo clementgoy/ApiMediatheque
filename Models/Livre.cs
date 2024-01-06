@@ -1,4 +1,12 @@
-public class Livre:DocumentDTO
+public enum GenreLivre
 {
-        public string Genre { get; set; }
+        Roman,
+        Scolaire,
+        Enfant
 }
+
+public class Livre : DocumentDTO
+{
+        public GenreLivre Genre { get; set; }
+}
+
