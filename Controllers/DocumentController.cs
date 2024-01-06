@@ -45,9 +45,13 @@ public class DocumentController : ControllerBase
     [HttpPost]
     public async Task<ActionResult<Document>> PostDocument(Document document)
     {
+        if (document.Stock <= 0)
+        {
+            return BadRequest("Le stock doit être au moins 1.");
+        }
+
         _context.Documents.Add(document);
         await _context.SaveChangesAsync();
-
 
         return CreatedAtAction(nameof(GetDocument), new { id = document.Id }, document);
     }
@@ -57,7 +61,17 @@ public class DocumentController : ControllerBase
     public async Task<IActionResult> PutDocument(int id, Document document)
     {
         if (id != document.Id)
+        {
             return BadRequest();
+        }
+
+        var empruntsEnCours = await _context.Emprunts.CountAsync(e => e.EmprunteId == id);
+
+        // Vérifie si la nouvelle valeur du stock est inférieure au nombre d'emprunts en cours
+        if (document.Stock < empruntsEnCours)
+        {
+            return BadRequest($"Le stock ne peut pas être inférieur au nombre d'emprunts en cours.");
+        }
 
         _context.Entry(document).State = EntityState.Modified;
 

@@ -55,17 +55,22 @@ public class EmpruntController : ControllerBase
             return BadRequest($"L'ID {emprunt.Id} de l'emprunt existe déjà. Choisissez un autre ID.");
         }
 
+        // Vérifie si l'utilisateur a déjà emprunté le document
+        var hasAlreadyBorrowed = await _context.Emprunts.AnyAsync(e => e.EmprunteurId == emprunt.EmprunteurId && e.EmprunteId == emprunt.EmprunteId);
+        if (hasAlreadyBorrowed)
+        {
+            return BadRequest($"L'utilisateur avec l'ID {emprunt.EmprunteurId} a déjà emprunté le document avec l'ID {emprunt.EmprunteId}.");
+        }
+
         // Vérifie si le stock est suffisant
-        var empruntsEnCours = await _context.Emprunts.CountAsync(e => e.EmprunteId == emprunt.EmprunteId);
-        if (empruntsEnCours >= document.Stock)
+        var nbEmpruntsEnCours = await _context.Emprunts.CountAsync(e => e.EmprunteId == emprunt.EmprunteId);
+        if (nbEmpruntsEnCours >= document.Stock)
         {
             return BadRequest($"Stock insuffisant. Tous les exemplaires du document avec l'ID {emprunt.EmprunteId} sont déjà empruntés.");
         }
 
         // Ajouter l'emprunt à la base de données
         _context.Emprunts.Add(emprunt);
-
-        document.Stock--; // Retire le document du stock
 
         await _context.SaveChangesAsync();
 
@@ -88,8 +93,6 @@ public class EmpruntController : ControllerBase
         }
 
         _context.Emprunts.Remove(emprunt);
-
-        document.Stock++; // Rajoute le document au stock
 
         await _context.SaveChangesAsync();
 
