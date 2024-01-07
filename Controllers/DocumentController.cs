@@ -2,20 +2,11 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 
 
-// Importez les espaces de noms nécessaires pour les DTO
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
 [ApiController]
 [Route("api/document")]
 public class DocumentController : ControllerBase
 {
     private readonly ApiMediathequeContext _context;
-
     public DocumentController(ApiMediathequeContext context)
     {
         _context = context;
@@ -23,127 +14,77 @@ public class DocumentController : ControllerBase
 
     // GET: api/document
     [HttpGet]
-    public async Task<ActionResult<IEnumerable<DocumentDTO>>> GetDocuments()
+    public async Task<ActionResult<IEnumerable<Document>>> GetDocuments()
     {
-        var documents = await _context.Documents
-            .Include(d => d.Livre)
-            .Include(d => d.Magazine)
-            .Include(d => d.Media)
-            .ToListAsync();
-
-        var documentDTOs = documents.Select(d => new DocumentDTO
+        var documents = await _context.Documents.ToListAsync();
+        foreach (Document doc in documents)
         {
-            Id = d.Id,
-            Titre = d.Titre,
-            Auteur = d.Auteur,
-            Stock = d.Stock,
-            Emprunt = _context.Emprunts.Count(e => e.EmprunteId == d.Id),
-            Type = d.Type,
-            Genre = d.Livre?.Genre,
-            Support = d.Media?.Support,
-            Publication = d.Magazine?.Publication
-        }).ToList();
-
-        return documentDTOs;
+            var emprunts = await _context.Emprunts.Where(d => d.EmprunteId == doc.Id).ToListAsync();
+            var emprunteurs = new List<int>();
+            foreach (var emprunt in emprunts)
+            {
+                emprunteurs.Add(emprunt.EmprunteurId);
+            }
+            doc.EmprunteurIds = emprunteurs;
+            doc.Emprunt = emprunteurs.Count;
+        }
+        return documents;
     }
 
     // GET: api/document/2
     [HttpGet("{id}")]
-    public async Task<ActionResult<DocumentDTO>> GetDocument(int id)
+    public async Task<ActionResult<Document>> GetDocument(int id)
     {
-        var document = await _context.Documents
-            .Include(d => d.Livre)
-            .Include(d => d.Magazine)
-            .Include(d => d.Media)
-            .SingleOrDefaultAsync(t => t.Id == id);
+        var document = await _context.Documents.SingleOrDefaultAsync(t => t.Id == id);
+        var emprunts = await _context.Emprunts.Where(d => d.Id == id).ToListAsync();
+        var emprunteurs = new List<int>();
 
         if (document == null)
         {
             return NotFound();
         }
-
-        var documentDTO = new DocumentDTO
+        foreach (Emprunt emprunt in emprunts)
         {
-            Id = document.Id,
-            Titre = document.Titre,
-            Auteur = document.Auteur,
-            Stock = document.Stock,
-            Emprunt = _context.Emprunts.Count(e => e.EmprunteId == document.Id),
-            Type = document.Type,
-            Genre = document.Livre?.Genre,
-            Support = document.Media?.Support,
-            Publication = document.Magazine?.Publication
-        };
+            emprunteurs.Add(emprunt.EmprunteurId);
+        }
+        document.EmprunteurIds = emprunteurs;
 
-        return documentDTO;
+        return document;
     }
 
     // POST: api/document
     [HttpPost]
-    public async Task<ActionResult<DocumentDTO>> PostDocument(DocumentDTO documentDTO)
+    public async Task<ActionResult<Document>> PostDocument(Document document)
     {
-        Document document;
-
-        switch (documentDTO.Type)
+        if (document.Stock <= 0)
         {
-            case "Livre":
-                document = new Livre(documentDTO.ToLivreDTO(), _context);
-                break;
-
-            case "Magazine":
-                document = new Magazine(documentDTO.ToMagazineDTO(), _context);
-                break;
-
-            case "Media":
-                document = new Media(documentDTO.ToMediaDTO(), _context);
-                break;
-
-            default:
-                return BadRequest("Type de document non pris en charge.");
+            return BadRequest("Le stock doit être au moins 1.");
         }
 
         _context.Documents.Add(document);
         await _context.SaveChangesAsync();
 
-        return CreatedAtAction(nameof(GetDocument), new { id = document.Id }, documentDTO);
+        return CreatedAtAction(nameof(GetDocument), new { id = document.Id }, document);
     }
 
-    // PUT: api/document/2
+    // PUT: api/doucment/2
     [HttpPut("{id}")]
-    public async Task<IActionResult> PutDocument(int id, DocumentDTO documentDTO)
+    public async Task<IActionResult> PutDocument(int id, Document document)
     {
-        var document = await _context.Documents
-            .Include(d => d.Livre)
-            .Include(d => d.Magazine)
-            .Include(d => d.Media)
-            .SingleOrDefaultAsync(d => d.Id == id);
-
-        if (document == null)
+        if (id != document.Id)
         {
-            return NotFound();
+            return BadRequest();
         }
 
-        document.Titre = documentDTO.Titre;
-        document.Auteur = documentDTO.Auteur;
-        document.Stock = documentDTO.Stock;
+        var empruntsEnCours = await _context.Emprunts.CountAsync(e => e.EmprunteId == id);
 
-        switch (documentDTO.Type)
+        // Vérifie si la nouvelle valeur du stock est inférieure au nombre d'emprunts en cours
+        if (document.Stock < empruntsEnCours)
         {
-            case "Livre":
-                document.Livre.Genre = documentDTO.Genre;
-                break;
-
-            case "Magazine":
-                document.Magazine.Publication = documentDTO.Publication;
-                break;
-
-            case "Media":
-                document.Media.Support = documentDTO.Support;
-                break;
-
-            default:
-                return BadRequest("Type de document non pris en charge.");
+            return BadRequest($"Le stock ne peut pas être inférieur au nombre d'emprunts en cours.");
         }
+
+        _context.Entry(document).State = EntityState.Modified;
 
         try
         {
@@ -186,5 +127,6 @@ public class DocumentController : ControllerBase
 
         return NoContent();
     }
+
 }
 
