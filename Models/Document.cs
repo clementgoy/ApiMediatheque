@@ -1,4 +1,4 @@
-public class Document
+public abstract class Document
 {
     public int Id { get; set; }
     public string Titre { get; set; }
@@ -6,6 +6,7 @@ public class Document
     public int Stock { get; set; }
     public int Emprunt { get; set; }
     public List<int> EmprunteurIds { get; set; } = new List<int>();
+    public abstract string Type { get; }
 
     public Document() { }
 

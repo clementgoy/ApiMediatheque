@@ -8,6 +8,7 @@ public enum GenreLivre
 public class Livre : Document
 {
         public GenreLivre Genre { get; set; }
+        public override string Type => "Livre";
 
         public Livre(LivreDTO livreDTO, ApiMediathequeContext context)
         {

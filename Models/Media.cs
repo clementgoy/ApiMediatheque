@@ -7,6 +7,7 @@ public enum SupportMedia
 public class Media : Document
 {
         public SupportMedia Support { get; set; }
+        public override string Type => "Media";
 
         public Media(MediaDTO mediaDTO, ApiMediathequeContext context)
         {
